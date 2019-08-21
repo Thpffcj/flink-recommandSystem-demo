@@ -27,20 +27,15 @@ public class SchedulerJob {
 		//		ScheduledExecutorService pool = new ScheduledThreadPoolExecutor(5);
 		Timer qTimer = new Timer();
 		qTimer.scheduleAtFixedRate(new RefreshTask(), 0, 15 * 1000);// 定时每15分钟
-
-
 	}
 
 	private static class RefreshTask extends TimerTask {
-
-
 
 		@Override
 		public void run() {
 			System.out.println(new Date() + " 开始执行任务！");
 			/**
 			 * 取出被用户点击过的产品id，getAllKey只是一个示例，真实情况不太可能把所有的产品取出来
-			 *
 			 */
 			List<String> allProId = new ArrayList<>();
 			try {
@@ -82,9 +77,6 @@ public class SchedulerJob {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
-
-
 }

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- *
  * ValueOperations：简单K-V操作
  * SetOperations：set类型数据操作
  * ZSetOperations：zset类型数据操作
@@ -61,7 +59,4 @@ public class RedisClient {
 	public String getMeter(){
 		return getData("meter");
 	}
-
-
-
 }
