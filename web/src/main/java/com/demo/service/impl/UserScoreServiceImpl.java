@@ -21,8 +21,10 @@ import java.util.List;
 public class UserScoreServiceImpl implements UserScoreService {
 
     private RedisClient redisClient = new RedisClient();
+
     @Autowired
     ProductService productService;
+
     /**
      * 计算用户的得分
      * @param userId

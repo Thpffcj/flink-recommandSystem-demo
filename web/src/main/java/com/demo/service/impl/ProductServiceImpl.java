@@ -26,9 +26,13 @@ public class ProductServiceImpl implements ProductService {
         return productDao.selectByIds(ids);
     }
 
+    /**
+     * 选择初始商品
+     * @param topSize
+     * @return
+     */
 	@Override
 	public List<String> selectInitPro(int topSize) {
 		return productDao.selectInitPro(topSize);
 	}
-
 }

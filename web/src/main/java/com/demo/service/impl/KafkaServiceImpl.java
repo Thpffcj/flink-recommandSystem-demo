@@ -24,8 +24,14 @@ public class KafkaServiceImpl implements KafkaService {
 
     private String TOPIC = "con";
 
+    /**
+     * 向kafka中发送数据
+     * @param key
+     * @param value
+     */
     @Override
     public void send(String key, String value) {
+        // TODO 这里的key指什么？
 		ListenableFuture<SendResult<String, String>> send = kafkaTemplate.send(TOPIC, key, value);
 
 		send.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
@@ -42,6 +48,13 @@ public class KafkaServiceImpl implements KafkaService {
 		});
     }
 
+    /**
+     * 生成日志
+     * @param userId
+     * @param productId
+     * @param action
+     * @return
+     */
     @Override
     public String makeLog(String userId, String productId, String action) {
 
@@ -62,6 +75,7 @@ public class KafkaServiceImpl implements KafkaService {
         }
         String timestamp = String.valueOf(date.getTime());
         int length = timestamp.length();
+        // TODO 想做什么？
         if (length > 3) {
             return timestamp.substring(0, length - 3);
         } else {

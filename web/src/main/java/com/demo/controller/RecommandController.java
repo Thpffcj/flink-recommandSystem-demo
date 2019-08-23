@@ -23,14 +23,15 @@ public class RecommandController {
 
     @Autowired
     KafkaService kafkaService;
+
     /**
      * 返回推荐页面
      * @param userId
      * @return
      * @throws IOException
      */
-    @GetMapping("/recommand")
-    public String recommandByUserId(@RequestParam("userId") String userId,
+    @GetMapping("/recommend")
+    public String recommendByUserId(@RequestParam("userId") String userId,
                                     Model model) throws IOException {
 
         // 拿到不同推荐方案的结果
@@ -47,6 +48,13 @@ public class RecommandController {
         return "user";
     }
 
+    /**
+     * 记录用户的行为
+     * @param userId
+     * @param productId
+     * @param action
+     * @return
+     */
     @GetMapping("/log")
     @ResponseBody
     public Result logToKafka(@RequestParam("id") String userId,
@@ -57,5 +65,4 @@ public class RecommandController {
         kafkaService.send(null, log);
         return ResultUtils.success();
     }
-
 }

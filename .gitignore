@@ -40,3 +40,6 @@ nbdist/
 
 log/
 logs/
+
+.DS_Store
+target

@@ -6,7 +6,6 @@ public class RankProductEntity {
     private String productId;
     private Double score;
 
-
     public String getId() {
         return id;
     }

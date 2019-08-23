@@ -9,7 +9,17 @@ import java.util.List;
 @Mapper
 public interface ContactDao {
 
+    /**
+     * 获取指定id的商品的其他信息
+     * @param id
+     * @return
+     */
     ContactEntity selectById(@Param("id") int id);
 
+    /**
+     * 获取指定集合商品的其他信息
+     * @param ids
+     * @return
+     */
     List<ContactEntity> selectByIds(@Param("ids") List<String> ids);
 }

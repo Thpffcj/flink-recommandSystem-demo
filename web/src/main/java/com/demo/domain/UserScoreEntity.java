@@ -6,6 +6,7 @@ import java.util.Arrays;
  * @author XINZE
  */
 public class UserScoreEntity {
+
     private String userId;
     private Double[] color;
     private Double[] country;

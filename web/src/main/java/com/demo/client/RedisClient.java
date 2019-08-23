@@ -34,6 +34,11 @@ public class RedisClient {
 		return redisTemplate.opsForValue().get(key);
 	}
 
+	/**
+	 * 写入redis数据
+	 * @param key
+	 * @param value
+	 */
 	public void setData(String key, String value) {
 		redisTemplate.opsForValue().set(key,value);
 	}

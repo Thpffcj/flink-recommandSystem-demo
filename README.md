@@ -1,5 +1,7 @@
 # 商品实时推荐系统
 
+    git push https://github.com/Thpffcj/flink-recommandSystem-demo.git
+
 ### 1. 系统架构  v2.0
 
 - **1.1 系统架构图**
