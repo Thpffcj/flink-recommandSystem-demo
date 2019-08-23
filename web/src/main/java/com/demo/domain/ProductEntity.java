@@ -1,5 +1,8 @@
 package com.demo.domain;
 
+/**
+ * 商品信息
+ */
 public class ProductEntity {
 
     private int productId;

@@ -2,7 +2,7 @@ package com.demo.controller;
 
 import com.demo.dto.ProductDto;
 import com.demo.service.KafkaService;
-import com.demo.service.RecommandService;
+import com.demo.service.RecommendService;
 import com.demo.util.Result;
 import com.demo.util.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,14 @@ import java.util.List;
 public class RecommandController {
 
     @Autowired
-    RecommandService recommandService;
+    RecommendService recommendService;
 
     @Autowired
     KafkaService kafkaService;
 
     /**
      * 返回推荐页面
+     * 根据用户特征，重新排序热度榜，之后根据两种推荐算法计算得到的产品相关度评分，为每个热度榜中的产品推荐几个关联的产品
      * @param userId
      * @return
      * @throws IOException
@@ -35,14 +36,17 @@ public class RecommandController {
                                     Model model) throws IOException {
 
         // 拿到不同推荐方案的结果
-        List<ProductDto> hotList = recommandService.recommandByHotList();
-        List<ProductDto> itemCfCoeffList = recommandService.recomandByItemCfCoeff();
-        List<ProductDto> productCoeffList = recommandService.recomandByProductCoeff();
+        // 热门商品推荐
+        List<ProductDto> hotList = recommendService.recommendByHotList();
+        // 协同过滤推荐
+        List<ProductDto> itemCoeffList = recommendService.recommendByItemCoeff();
+        // 产品画像推荐
+        List<ProductDto> productCoeffList = recommendService.recommendByProductCoeff();
 
         // 将结果返回给前端
         model.addAttribute("userId", userId);
         model.addAttribute("hotList",hotList);
-        model.addAttribute("itemCfCoeffList", itemCfCoeffList);
+        model.addAttribute("itemCfCoeffList", itemCoeffList);
         model.addAttribute("productCoeffList", productCoeffList);
 
         return "user";

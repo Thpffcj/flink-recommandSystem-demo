@@ -35,9 +35,8 @@ public class BackstageController {
      */
     @GetMapping("/index")
     public String getBackStage(Model model){
-        // 获取 top 榜单数据
+        // 获取 top 榜单数据的id
         List<String> topList = redisClient.getTopList(topSize);
-        //System.out.println(topList);
         List<ContactEntity> topProduct = contactService.selectByIds(topList);
         model.addAttribute("topProduct", topProduct);
         return "index";
@@ -50,6 +49,7 @@ public class BackstageController {
     @ResponseBody
     @GetMapping("/meter")
     public Result getMeter(){
+        // TODO
         // 获取 1小时内接入量
 //        String meter = redisClient.getMeter();
         String meter = "69";

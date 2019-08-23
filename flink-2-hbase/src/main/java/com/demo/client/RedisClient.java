@@ -1,12 +1,12 @@
 package com.demo.client;
 
-
 import com.demo.util.Property;
 import redis.clients.jedis.Jedis;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RedisClient {
+
     private static Jedis jedis;
 
     static {
@@ -16,11 +16,15 @@ public class RedisClient {
 
     private static RedisClient redisClient;
 
-
     private String getData(String key){
         return jedis.get(key);
     }
 
+    /**
+     * 获得top热度商品id
+     * @param topRange
+     * @return
+     */
     public List<String> getTopList(int topRange){
         List<String> res = new ArrayList<>();
         for (int i = 0; i < topRange; i++) {
@@ -28,7 +32,6 @@ public class RedisClient {
         }
         return res;
     }
-
 
     public static void main(String[] args) {
         RedisClient client = new RedisClient();

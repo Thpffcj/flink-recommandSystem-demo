@@ -1,5 +1,8 @@
 package com.demo.domain;
 
+/**
+ * 商品其他信息
+ */
 public class ContactEntity {
 
     private int id;

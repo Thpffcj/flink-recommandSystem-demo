@@ -1,4 +1,3 @@
-
 package com.demo.map;
 
 import com.demo.client.HbaseClient;
@@ -73,9 +72,7 @@ public class UserHistoryWithInterestMapFunction extends RichMapFunction<LogEntit
 
             HbaseClient.increamColumn("u_interest",String.valueOf(log.getUserId()),"p",String.valueOf(log.getProductId()));
             }
-
         }
-
     }
 
 }
@@ -83,8 +80,7 @@ public class UserHistoryWithInterestMapFunction extends RichMapFunction<LogEntit
 /**
  * 动作类 记录动作类型和动作发生时间(Event Time)
  */
-class Action implements Serializable
-{
+class Action implements Serializable {
 
     private String type;
     private String time;

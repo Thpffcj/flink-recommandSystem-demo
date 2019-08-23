@@ -8,7 +8,7 @@ import com.demo.domain.ProductScoreEntity;
 import com.demo.dto.ProductDto;
 import com.demo.service.ContactService;
 import com.demo.service.ProductService;
-import com.demo.service.RecommandService;
+import com.demo.service.RecommendService;
 import com.demo.service.UserScoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +22,20 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service("recommandService")
-public class RecommandServiceImpl implements RecommandService {
+@Service("recommendService")
+public class RecommendServiceImpl implements RecommendService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     UserScoreService userScoreService;
+
     @Autowired
     ProductService productService;
+
     @Autowired
     ContactService contactService;
+
     @Resource
     private RedisClient redisClient;
 
@@ -80,7 +83,7 @@ public class RecommandServiceImpl implements RecommandService {
      * @return
      */
     @Override
-    public List<ProductDto> recommandByHotList() {
+    public List<ProductDto> recommendByHotList() {
         // 获取top榜单的productId
         List<String> topList = getDefaultTop();
         int topSize = topList.size();
@@ -91,10 +94,16 @@ public class RecommandServiceImpl implements RecommandService {
         return fillProductDto(topList, contactEntities, productEntities, topSize);
     }
 
+    /**
+     * 协同过滤推荐结果
+     * @return
+     * @throws IOException
+     */
     @Override
-    public List<ProductDto> recomandByItemCfCoeff() throws IOException {
+    public List<ProductDto> recommendByItemCoeff() throws IOException {
+        // 获取top榜单
         List<String> topList = getDefaultTop();
-        List<String> px = addRecommandProduct(topList, "px");
+        List<String> px = addRecommendProduct(topList, "px");
         px = removeDuplicateWithOrder(px);
         // 拿到产品详情表
         List<ContactEntity> contactEntities = contactService.selectByIds(px);
@@ -103,11 +112,15 @@ public class RecommandServiceImpl implements RecommandService {
         return transferToDto(px, contactEntities, productEntities);
     }
 
-
+    /**
+     * 产品画像推荐结果
+     * @return
+     * @throws IOException
+     */
     @Override
-    public List<ProductDto> recomandByProductCoeff() throws IOException {
+    public List<ProductDto> recommendByProductCoeff() throws IOException {
         List<String> topList = getDefaultTop();
-        List<String> ps = addRecommandProduct(topList, "ps");
+        List<String> ps = addRecommendProduct(topList, "ps");
         ps = removeDuplicateWithOrder(ps);
         // 拿到产品详情表
         List<ContactEntity> contactEntities = contactService.selectByIds(ps);
@@ -133,23 +146,22 @@ public class RecommandServiceImpl implements RecommandService {
     }
 
     /**
-     * 查询中对应的hbase推荐表数据添加加结果集
-     *
+     * 查询中对应的HBase推荐表数据添加加结果集
      * @param topList
      * @return List<String> 结果id集合
      */
-    private List<String> addRecommandProduct(List<String> topList, String table) {
+    private List<String> addRecommendProduct(List<String> topList, String table) {
         List<String> ret = new ArrayList<>();
         for (String s : topList) {
-            //首先将top产品添加进结果集
+            // 首先将top产品添加进结果集
             ret.add(s);
             List<Map.Entry> ps = new ArrayList<>();
-            //获取的产品list是已经排好序的,根据得分排序
+            // 获取的产品list是已经排好序的,根据得分排序
             try {
                 ps = HbaseClient.getRow(table, s);
                 Collections.sort(ps, ((o1, o2) -> -(new BigDecimal(o1.getValue().toString()).compareTo(new BigDecimal(o2.getValue().toString())))));
             } catch (Exception e) {
-                logger.warn("Hbase中没有产品【{}】记录", s);
+                logger.warn("HBase中没有产品[{}]记录", s);
             }
             if (CollectionUtils.isEmpty(ps)) {
                 continue;
@@ -221,20 +233,18 @@ public class RecommandServiceImpl implements RecommandService {
 
     /**
      * 如果没有达到TOP_SIZE，就从数据库中取补充至TOP_SIZE
-     *
      * @return
      */
     private List<String> getDefaultTop() {
         List<String> topList = redisClient.getTopList(TOP_SIZE);
         topList = topList.stream().filter(Objects::nonNull).collect(Collectors.toList());
-        if (topList.size() < 10) {
+        if (topList.size() < TOP_SIZE) {
             // 尽量多的拿产品列表
             topList.addAll(productService.selectInitPro(100));
-            topList = topList.stream().distinct().collect(Collectors.toList());
+            // 只保留TOP_SIZE个商品
+            topList = topList.stream().distinct().limit(TOP_SIZE).collect(Collectors.toList());
             logger.info("top: {}", topList);
         }
         return topList;
     }
-
-
 }

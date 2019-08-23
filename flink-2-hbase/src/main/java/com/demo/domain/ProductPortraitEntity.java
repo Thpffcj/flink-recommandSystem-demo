@@ -1,5 +1,8 @@
 package com.demo.domain;
 
+/**
+ * 用户画像
+ */
 public class ProductPortraitEntity {
 
     private int man;

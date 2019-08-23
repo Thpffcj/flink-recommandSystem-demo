@@ -14,6 +14,11 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     ContactDao contactDao;
 
+    /**
+     * 根据id集合获取商品其他信息
+     * @param ids
+     * @return
+     */
     @Override
     public List<ContactEntity> selectByIds(List<String> ids) {
         return contactDao.selectByIds(ids);

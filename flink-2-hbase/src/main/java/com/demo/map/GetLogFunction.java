@@ -5,9 +5,10 @@ import com.demo.util.LogToEntity;
 import org.apache.flink.api.common.functions.MapFunction;
 
 /*
- * 将kafka 的数据 转为 Log类
+ * 将kafka的数据转为Log类
  */
 public class GetLogFunction implements MapFunction<String, LogEntity> {
+
     @Override
     public LogEntity map(String s) throws Exception {
 

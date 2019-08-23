@@ -1,6 +1,7 @@
 package com.demo.domain;
 
 public class ProductScoreEntity {
+
     private ProductEntity product;
     private double score;
     private int rank;

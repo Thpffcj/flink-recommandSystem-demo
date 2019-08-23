@@ -33,7 +33,6 @@ public class MysqlClient {
         return stmt.executeQuery(sql);
     }
 
-
     public static ResultSet selectUserById(int id) throws SQLException{
         String sql = String.format("select  * from user where user_id = %s",id);
         return stmt.executeQuery(sql);
@@ -45,5 +44,4 @@ public class MysqlClient {
 			System.out.println(resultSet.getString(2));
 		}
 	}
-
 }

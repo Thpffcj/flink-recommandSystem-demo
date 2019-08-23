@@ -7,6 +7,11 @@ import com.demo.domain.LogEntity;
  */
 public class LogToEntity {
 
+    /**
+     * 将字符串解析为log实体
+     * @param s
+     * @return
+     */
     public static LogEntity getLog(String s){
         System.out.println(s);
         String[] values = s.split(",");

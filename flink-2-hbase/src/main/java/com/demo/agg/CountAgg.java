@@ -4,6 +4,7 @@ import com.demo.domain.LogEntity;
 import org.apache.flink.api.common.functions.AggregateFunction;
 
 public class CountAgg implements AggregateFunction<LogEntity, Long, Long> {
+
     @Override
     public Long createAccumulator() {
         return 0L;
