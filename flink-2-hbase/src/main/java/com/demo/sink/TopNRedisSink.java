@@ -7,7 +7,6 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.RedisMapper;
 
 public class TopNRedisSink implements RedisMapper<TopProductEntity> {
 
-
     @Override
     public RedisCommandDescription getCommandDescription() {
         return new RedisCommandDescription(RedisCommand.SET, null);

@@ -24,6 +24,11 @@ public class Property {
 		System.out.println(">>>flink-2-hbase<<<资源文件加载成功");
 	}
 
+	/**
+	 * 从配置文件获取配置
+	 * @param key
+	 * @return
+	 */
 	public static String getStrValue(String key) {
 		return contextProperties.getProperty(key);
 	}
@@ -34,6 +39,11 @@ public class Property {
 		return Integer.parseInt(strValue);
 	}
 
+	/**
+	 * 获得kafka的基本配置
+	 * @param groupId
+	 * @return
+	 */
 	public static Properties getKafkaProperties(String groupId) {
 		Properties properties = new Properties();
 		properties.setProperty("bootstrap.servers", getStrValue("kafka.bootstrap.servers"));
@@ -41,5 +51,4 @@ public class Property {
 		properties.setProperty("group.id", groupId);
 		return properties;
 	}
-
 }

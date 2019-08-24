@@ -11,7 +11,7 @@ import org.apache.flink.api.common.functions.MapFunction;
 public class UserHistoryMapFunction implements MapFunction<String, String> {
 
     /**
-     * 将 用户-产品  和 产品-用户 分别存储Hbase表
+     * 将用户-产品和产品-用户分别存储HBase表
      * @param s
      * @return
      * @throws Exception

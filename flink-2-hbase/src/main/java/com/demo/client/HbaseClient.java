@@ -76,23 +76,26 @@ public class HbaseClient {
         return new String(resultValue);
     }
 
-
     /**
-     * 获取一行的所有数据 并且排序
+     * 获取一行的所有数据并且排序
      *
      * @param tableName 表名
-     * @param rowKey    列名
+     * @param rowKey 列名
+     * @return 键值对的集合
      * @throws IOException
      */
     public static List<Map.Entry> getRow(String tableName, String rowKey) throws IOException {
+
         Table table = conn.getTable(TableName.valueOf(tableName));
+
         byte[] row = Bytes.toBytes(rowKey);
         Get get = new Get(row);
-        Result r = table.get(get);
+        Result result = table.get(get);
 
         HashMap<String, Double> rst = new HashMap<>();
 
-        for (Cell cell : r.listCells()) {
+        // TODO
+        for (Cell cell : result.listCells()) {
             String key = Bytes.toString(cell.getQualifierArray(), cell.getQualifierOffset(), cell.getQualifierLength());
             String value = Bytes.toString(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
             rst.put(key, new Double(value));
@@ -101,7 +104,8 @@ public class HbaseClient {
         List<Map.Entry> ans = new ArrayList<>();
         ans.addAll(rst.entrySet());
 
-        Collections.sort(ans, (m1, m2) -> new Double((Double) m1.getValue() - (Double) m2.getValue()).intValue());
+        Collections.sort(ans, (m1, m2)
+                -> new Double((Double) m1.getValue() - (Double) m2.getValue()).intValue());
 
         return ans;
     }
@@ -109,17 +113,17 @@ public class HbaseClient {
     /**
      * 向对应列添加数据
      *
-     * @param tablename  表名
-     * @param rowkey     行号
-     * @param famliyname 列族名
+     * @param tableName  表名
+     * @param rowKey     行号
+     * @param familyName 列族名
      * @param column     列名
      * @param data       数据
      * @throws Exception
      */
-    public static void putData(String tablename, String rowkey, String famliyname, String column, String data) throws Exception {
-        Table table = conn.getTable(TableName.valueOf(tablename));
-        Put put = new Put(rowkey.getBytes());
-        put.addColumn(famliyname.getBytes(), column.getBytes(), data.getBytes());
+    public static void putData(String tableName, String rowKey, String familyName, String column, String data) throws Exception {
+        Table table = conn.getTable(TableName.valueOf(tableName));
+        Put put = new Put(rowKey.getBytes());
+        put.addColumn(familyName.getBytes(), column.getBytes(), data.getBytes());
         table.put(put);
     }
 
@@ -141,12 +145,6 @@ public class HbaseClient {
         putData(tablename, rowkey, famliyname, column, String.valueOf(res));
     }
 
-    public static void main(String[] args) throws IOException {
-        List<Map.Entry> ps = HbaseClient.getRow("ps", "1");
-        ps.forEach(System.out::println);
-    }
-
-
     /**
      * 取出表中所有的key
      *
@@ -162,5 +160,10 @@ public class HbaseClient {
             keys.add(new String(r.getRow()));
         }
         return keys;
+    }
+
+    public static void main(String[] args) throws IOException {
+        List<Map.Entry> ps = HbaseClient.getRow("ps", "1");
+        ps.forEach(System.out::println);
     }
 }

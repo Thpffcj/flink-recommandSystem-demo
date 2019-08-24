@@ -29,7 +29,7 @@ public class ProductCoeff {
 	 * @param id 产品id
 	 * @param others 其他产品的id
 	 */
-	public void getSingelProductCoeff(String id, List<String> others) throws Exception {
+	public void getSingleProductCoeff(String id, List<String> others) throws Exception {
 		ProductPortraitEntity product = sigleProduct(id);
 		for (String proId : others) {
 			if (id.equals(proId))

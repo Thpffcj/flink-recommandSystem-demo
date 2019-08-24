@@ -1,10 +1,16 @@
-  // 创建事实表 con （记录真实的日志信息）
-  create 'con',{NAME => 'log', VERSIONS => 2}
+新建一个以命名空间ns1的表t1，列族为cf1
+create 'ns1:t1', 'cf1'
 
- // 创建产品画像表  prod  （记录产品画像  目前阶段2个特征 sex age）
- create 'prod',{NAME => 'sex', VERSIONS => 2},{NAME => 'age', VERSIONS => 2}
+建立一个有3个column family的表，定义表的时候只需要指定column family的名字，列名在put的时候动态指定
+create 't1', {NAME => 'f1', VERSIONS => 1}, {NAME => 'f2', VERSIONS => 1}, {NAME => 'f3', VERSIONS => 1}
 
- // 创建用户画像表  user（记录用户画像  目前阶段3个特征 country  color  style）
+// 创建事实表 con （记录真实的日志信息）
+create 'con',{NAME => 'log', VERSIONS => 2}
+
+// 创建产品画像表  prod  （记录产品画像  目前阶段2个特征 sex age）
+create 'prod',{NAME => 'sex', VERSIONS => 2},{NAME => 'age', VERSIONS => 2}
+
+// 创建用户画像表  user（记录用户画像  目前阶段3个特征 country  color  style）
 create 'user',{NAME => 'country', VERSIONS => 2},{NAME => 'color', VERSIONS => 2},{NAME => 'style', VERSIONS => 2}
 
 // 创建用户产品关联表  u_history  （记录每个用户都对哪些产品发生过动作    p  ）

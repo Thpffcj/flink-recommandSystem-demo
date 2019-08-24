@@ -3,7 +3,6 @@ package com.demo.scheduler;
 import com.demo.client.HbaseClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,38 +14,41 @@ import java.util.Map;
  *      *           sqrt(i || j)
  * @author XINZE
  */
-public class ItemCfCoeff {
+public class ItemCoeff {
 
     /**
-     * 计算一个产品和其他相关产品的评分,并将计算结果放入Hbase
+     * 计算一个产品和其他相关产品的评分,并将计算结果放入HBase
      *
-     * @param id     产品id
+     * @param id 产品id
      * @param others 其他产品的id
      */
-    public void getSingelItemCfCoeff(String id, List<String> others) throws Exception {
+    public void getSingleItemCoeff(String id, List<String> others) throws Exception {
 
         for (String other : others) {
-        	if(id.equals(other)) continue;
-            Double score = twoItemCfCoeff(id, other);
-            HbaseClient.putData("px",id, "p",other,score.toString());
+        	if(id.equals(other)) {
+        	    continue;
+            }
+            Double score = twoItemCoeff(id, other);
+            HbaseClient.putData("px", id, "p", other, score.toString());
         }
     }
 
     /**
      * 计算两个产品之间的评分
-     * @param id
-     * @param other
+     * @param id 产品id
+     * @param other 第二个产品的id
      * @return
      * @throws IOException
      */
-    private Double twoItemCfCoeff(String id, String other) throws IOException {
+    private Double twoItemCoeff(String id, String other) throws IOException {
+
         List<Map.Entry> p1 = HbaseClient.getRow("p_history", id);
         List<Map.Entry> p2 = HbaseClient.getRow("p_history", other);
 
         int n = p1.size();
         int m = p2.size();
         int sum = 0;
-        Double total = Math.sqrt(n * m);
+        double total = Math.sqrt(n * m);
         for (Map.Entry entry : p1) {
             String key = (String) entry.getKey();
             for (Map.Entry p : p2) {
@@ -59,8 +61,5 @@ public class ItemCfCoeff {
             return 0.0;
         }
         return sum/total;
-
     }
-
-
 }
